@@ -42,7 +42,59 @@ def brightnessToCharInverted (bns):
         case _:
             return '$'
 
-# makes brightness non-inverted
+# clearer b/w distinction
+def brightnessToCharContrast (bns):
+    match bns:
+        case bns if bns > 200:
+            return '$'
+        case bns if bns > 125:
+            return ')'
+        case bns if bns > 75:
+            return ':'
+        case _:
+            return ' '
+
+# more brightness-variations, to use with high (low) precision and big monitors
+def brightnessToCharPristine (bns):
+    match bns:
+        case bns if bns > 250:
+            return '$'
+        case bns if bns > 250:
+            return 'B'
+        case bns if bns > 235:
+            return '8'
+        case bns if bns > 220:
+            return '#'
+        case bns if bns > 205:
+            return 'h'
+        case bns if bns > 190:
+            return 'd'
+        case bns if bns > 175:
+            return 'w'
+        case bns if bns > 160:
+            return 'L'
+        case bns if bns > 135:
+            return 'Z'
+        case bns if bns > 120:
+            return 'x'
+        case bns if bns > 105:
+            return '/'
+        case bns if bns > 90:
+            return '?'
+        case bns if bns > 75:
+            return '-'
+        case bns if bns > 60:
+            return '>'
+        case bns if bns > 45:
+            return 'I'
+        case bns if bns > 30:
+            return '"'
+        case bns if bns > 15:
+            return '.'
+        case _:
+            return ' '
+
+# standard
 def brightnessToChar (bns):
     match bns:
         case bns if bns > 225:
@@ -69,7 +121,18 @@ def brightnessToChar (bns):
             return ' '
 
 def chunkToAscii (width, offx, offy, img):
-    return brightnessToChar(getBrightnessFromChunk(width, offx, offy, img))
+    if len(sys.argv) >= 4:
+        renderType = sys.argv[3]
+        if renderType == "pristine":
+            return brightnessToCharPristine(getBrightnessFromChunk(width, offx, offy, img))
+        elif renderType == "contrast":
+            return brightnessToCharContrast(getBrightnessFromChunk(width, offx, offy, img))
+        elif renderType == "inverted":
+            return brightnessToCharInverted(getBrightnessFromChunk(width, offx, offy, img))
+        else:
+            print("Incorrect argument " + "'" + sys.argv[3] + "'. \n For help, simply dont enter any arguments. ")
+    else:
+        return brightnessToChar(getBrightnessFromChunk(width, offx, offy, img))
 
 def asciiIfyImage (imgpath, precision):
     precision = int(precision)
@@ -86,4 +149,15 @@ def asciiIfyImage (imgpath, precision):
         finalOutput += "\n"
     print(finalOutput)
     
-asciiIfyImage(sys.argv[1], sys.argv[2])
+
+#asciiIfyImage(sys.argv[1], sys.argv[2])
+
+def treatInput (argvls):
+    if len(argvls) == 1:
+        print("\n \t Example usage: python3 imgtoasciipy.py '<path>/<to>/<image.xyz>', '<precision>', '<render type>'\n")
+        print("\t precision: \n\t\t -An integer as string. Defines pixels/char. Lower is more precise.")
+        print("\t render type: \n\t\t -Chooses render type. Options = [contrast, inverted, pristine, default={enter nothing}] \n")
+    else:
+        asciiIfyImage(argvls[1], argvls[2])
+
+treatInput(sys.argv)
