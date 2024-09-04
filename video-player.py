@@ -2,11 +2,10 @@ import cv2
 from PIL import Image
 
 def getFrames ():
-    capture = cv2.VideoCapture("./videos/Fireworks.mp4")
+    capture = cv2.VideoCapture("./videos/fire.mp4")
     frameNr = 0
 
     while (frameNr < 50):
-        success, frame = capture.read()
         if success:
             cv2.imwrite(f"./frames/{frameNr}.jpg", frame)
         else:
@@ -25,6 +24,7 @@ def bwFrames ():
         img.save(f"./frames/{i}.jpg")
         i += 1
 
-getFrames()
-bwFrames()
+def prepVideo (sysArgs):
+    getFrames()
+    bwFrames()
 
