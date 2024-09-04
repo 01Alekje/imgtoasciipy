@@ -129,17 +129,17 @@ def brightnessToChar (bns):
 
 
 def chunkToAscii (width, offx, offy, img, rMode):
-    if rMode == "default":
-        return brightnessToChar(getBrightnessFromChunk(width, offx, offy, img))
-    elif rMode == "pristine":
-        return brightnessToCharPristine(getBrightnessFromChunk(width, offx, offy, img))
-    elif rMode == "contrast":
-        return brightnessToCharContrast(getBrightnessFromChunk(width, offx, offy, img))
-    elif rMode == "inverted":
-        return brightnessToCharInverted(getBrightnessFromChunk(width, offx, offy, img))
-    else:
-        print("\n\tIncorrect argument " + "'" + rMode + "'. For help, simply dont enter any arguments. \n")
-        exit(1)
+    #if rMode == "default":
+    return brightnessToChar(getBrightnessFromChunk(width, offx, offy, img))
+    #elif rMode == "pristine":
+    #    return brightnessToCharPristine(getBrightnessFromChunk(width, offx, offy, img))
+    #elif rMode == "contrast":
+    #    return brightnessToCharContrast(getBrightnessFromChunk(width, offx, offy, img))
+    #elif rMode == "inverted":
+    #    return brightnessToCharInverted(getBrightnessFromChunk(width, offx, offy, img))
+    #else:
+    #    print("\n\tIncorrect argument " + "'" + rMode + "'. For help, simply dont enter any arguments. \n")
+    #    exit(1)
         
 
 def asciiIfyImage (imgpath, precision, writetofile, rMode):
@@ -156,34 +156,43 @@ def asciiIfyImage (imgpath, precision, writetofile, rMode):
             i += precision
         j += precision
         finalOutput += "\n"
-    if writetofile == True:
-        writeToFile(finalOutput)
-    else:
-        print(finalOutput)
+    #if writetofile == True:
+    #    writeToFile(finalOutput)
+    #else:
+    print(finalOutput)
 
 
-def writeToFile (finalOutput):
-    open("./output/asciiArt.txt", 'w').close()
-    f = open("./output/asciiArt.txt", "w")
-    f.write(finalOutput)
-    f.close()
+asciiIfyImage("./frames/0.jpg", 10, False, "default")
+
+i = 0
+while (i < 50):
+    asciiIfyImage(f"./frames/{i}.jpg", 5, False, "default")
+    print("\n\n")
+    i += 1
 
 
-def treatInput (argvls):
-    if len(argvls) <= 3:
-        print("\n\t Example usage: python3 imgtoasciipy.py *'<path>/<to>/<image.xyz>', *'<precision>', *'<write to file>' '<render type>'\n")
-        print("\t *precision: \n\t\t -An integer as string. Defines pixels/char. Lower is more precise.")
-        print("\t *write to file: \n\t\t -'y' writes to file ./output/asciiArt.txt\n\t\t -'n' writes to this terminal window")
-        print("\t render type: \n\t\t -Chooses render type. Options = [contrast, inverted, pristine, default={enter nothing}] \n")
-    if len(argvls) >= 4:
-        if argvls[3].lower() == 'y':
-            wtf = True
-        else:
-            wtf = False
-        if len(argvls) > 4:
-            asciiIfyImage(argvls[1], argvls[2], wtf, argvls[4].lower())
-        else:
-            asciiIfyImage(argvls[1], argvls[2], wtf, "default")
+#def writeToFile (finalOutput):
+#    open("./output/asciiArt.txt", 'w').close()
+#    f = open("./output/asciiArt.txt", "w")
+#    f.write(finalOutput)
+#    f.close()
 
 
-treatInput(sys.argv)
+#def treatInput (argvls):
+#    if len(argvls) <= 3:
+#        print("\n\t Example usage: python3 imgtoasciipy.py *'<path>/<to>/<image.xyz>', *'<precision>', *'<write to file>' '<render type>'\n")
+#        print("\t *precision: \n\t\t -An integer as string. Defines pixels/char. Lower is more precise.")
+#        print("\t *write to file: \n\t\t -'y' writes to file ./output/asciiArt.txt\n\t\t -'n' writes to this terminal window")
+#        print("\t render type: \n\t\t -Chooses render type. Options = [contrast, inverted, pristine, default={enter nothing}] \n")
+#    if len(argvls) >= 4:
+#        if argvls[3].lower() == 'y':
+#            wtf = True
+#        else:
+#            wtf = False
+#        if len(argvls) > 4:
+#            asciiIfyImage(argvls[1], argvls[2], wtf, argvls[4].lower())
+#        else:
+#            asciiIfyImage(argvls[1], argvls[2], wtf, "default")
+
+
+#treatInput(sys.argv)
