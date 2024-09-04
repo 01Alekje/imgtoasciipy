@@ -1,4 +1,5 @@
 import sys
+import os
 import cv2
 from PIL import Image
 
@@ -160,6 +161,7 @@ def asciiIfyImage (imgpath, precision, writetofile, rMode):
     if writetofile == True:
         writeToFile(finalOutput)
     else:
+        os.system('clear')
         print(finalOutput)
 
 
@@ -182,21 +184,21 @@ def treatInput (argvls):
             wtf = True
         elif argvls[3].lower() == 'v':
             wtf = False
-            prepVideo(argvls[1])
+            prepVideo(argvls[1], int(argvls[2]))
         else:
             wtf = False
         if len(argvls) > 4:
-            asciiIfyImage(argvls[1], argvls[2], wtf, argvls[4].lower())
+            asciiIfyImage(argvls[1], int(argvls[2]), wtf, argvls[4].lower())
         else:
-            asciiIfyImage(argvls[1], argvls[2], wtf, "default")
+            asciiIfyImage(argvls[1], int(argvls[2]), wtf, "default")
 
 # Exclusively video stuff
 
-def getFrames (vidPath):
+def getFrames (vidPath, frames):
     capture = cv2.VideoCapture(vidPath)
 
     frameNr = 0
-    while (frameNr < 50):
+    while (frameNr < frames):
         success, frame = capture.read()
         if success:
             cv2.imwrite(f"./frames/{frameNr}.jpg", frame)
@@ -208,23 +210,25 @@ def getFrames (vidPath):
     capture.release()
 
 
-def bwFrames ():
+def bwFrames (frames):
     i = 0
-    while (i < 50):
+    while (i < frames):
         img = Image.open(f"./frames/{i}.jpg")
         img = img.convert("L")
         img.save(f"./frames/{i}.jpg")
         i += 1
 
 
-def prepVideo (vidPath):
-    getFrames(vidPath)
-    bwFrames()
+def prepVideo (vidPath, precision):
+    frames = 2700
+    getFrames(vidPath, frames)
+    bwFrames(frames)
     i = 0
-    while (i < 50):
-        asciiIfyImage(f"./frames/{i}.jpg", 5, False, "default")
+    while (i < frames):
+        asciiIfyImage(f"./frames/{i}.jpg", precision, False, "default")
         print("\n\n")
-        i += 1
+        # Bigger i means faster video
+        i += 3
 
 
 # The function that starts it all
