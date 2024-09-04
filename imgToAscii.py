@@ -150,11 +150,9 @@ def asciiIfyImage (imgpath, precision):
     print(finalOutput)
     
 
-#asciiIfyImage(sys.argv[1], sys.argv[2])
-
 def treatInput (argvls):
-    if len(argvls) == 1:
-        print("\n \t Example usage: python3 imgtoasciipy.py '<path>/<to>/<image.xyz>', '<precision>', '<render type>'\n")
+    if len(argvls) <= 2:
+        print("\n \t Example usage: python3 imgtoasciipy.py *'<path>/<to>/<image.xyz>', *'<precision>', '<render type>'\n")
         print("\t precision: \n\t\t -An integer as string. Defines pixels/char. Lower is more precise.")
         print("\t render type: \n\t\t -Chooses render type. Options = [contrast, inverted, pristine, default={enter nothing}] \n")
     else:
