@@ -1,7 +1,5 @@
+import sys
 from PIL import Image
-
-with Image.open("./images/levi.png") as im:
-    px = im.load()
 
 def setBlackAndWhite (img):
     img = img.convert("L")
@@ -11,9 +9,9 @@ def getBrightnessFromChunk (width, offx, offy, img):
     px = img.load()
     i = offx
     tot = 0
-    while (i < width + offx and i < im.size[0]):
+    while (i < width + offx and i < img.size[0]):
         j = offy
-        while (j < width + offy and j < im.size[1]):
+        while (j < width + offy and j < img.size[1]):
             tot += px[i, j]
             j += 1
         i += 1
@@ -21,7 +19,7 @@ def getBrightnessFromChunk (width, offx, offy, img):
     return tot
 
 # makes brightness inverted
-def brightnessToCharFake (bns):
+def brightnessToCharInverted (bns):
     match bns:
         case bns if bns > 225:
             return '.'
@@ -59,20 +57,24 @@ def brightnessToChar (bns):
             return 'z'
         case bns if bns > 100:
             return 'f'
-        case bns if bns > 75:
+        case bns if bns > 80:
             return ')'
-        case bns if bns > 50:
+        case bns if bns > 60:
             return '+'
-        case bns if bns > 25:
+        case bns if bns > 35:
             return ':'
-        case _:
+        case bns if bns > 25:
             return '.'
+        case _:
+            return ' '
 
 def chunkToAscii (width, offx, offy, img):
     return brightnessToChar(getBrightnessFromChunk(width, offx, offy, img))
 
-def asciiIfyImage (im, precision):
-    bwImage = setBlackAndWhite(im)
+def asciiIfyImage (imgpath, precision):
+    precision = int(precision)
+    img = Image.open(imgpath)
+    bwImage = setBlackAndWhite(img)
     finalOutput = ""
     j = 0
     while (j < (bwImage.size)[1]):
@@ -84,4 +86,4 @@ def asciiIfyImage (im, precision):
         finalOutput += "\n"
     print(finalOutput)
     
-asciiIfyImage(im, 3)
+asciiIfyImage(sys.argv[1], sys.argv[2])
